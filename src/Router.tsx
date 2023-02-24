@@ -8,25 +8,24 @@ import Root from "./routes/Root";
 
 const router = createBrowserRouter([
   {
-    path: `/${process.env.PUBLIC_URL}/`,
+    path: process.env.PUBLIC_URL || "/",
     element: <Root />,
     errorElement: <NotFound />,
     children: [
       {
-        path: `/${process.env.PUBLIC_URL}/}`,
+        path: "",
         element: <Coins />,
       },
       {
-        // path: ":coinId",
-        path: `/${process.env.PUBLIC_URL}/:coinId`,
+        path: ":coinId",
         element: <Coin />,
         children: [
           {
-            path: `/${process.env.PUBLIC_URL}/:coinId/chart`,
+            path: "chart",
             element: <Chart />,
           },
           {
-            path: `/${process.env.PUBLIC_URL}/:coinId/price`,
+            path: "price",
             element: <Price />,
           },
         ],
