@@ -8,7 +8,7 @@ import Root from "./routes/Root";
 
 const router = createBrowserRouter([
   {
-    path: process.env.PUBLIC_URL + "/",
+    path: "/",
     element: <Root />,
     errorElement: <NotFound />,
     children: [
