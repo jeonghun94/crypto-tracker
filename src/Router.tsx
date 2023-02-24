@@ -8,7 +8,7 @@ import Root from "./routes/Root";
 
 const router = createBrowserRouter([
   {
-    path: "https://jeonghun94.github.io/crypto-tracker/" || "/",
+    path: "/crypto-tracker/",
     element: <Root />,
     errorElement: <NotFound />,
     children: [
