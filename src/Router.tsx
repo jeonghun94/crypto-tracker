@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        path: "",
+        path: `${process.env.PUBLIC_URL}/}`,
         element: <Coins />,
       },
       {
