@@ -6,32 +6,35 @@ import NotFound from "./routes/NotFound";
 import Price from "./routes/Price";
 import Root from "./routes/Root";
 
-const router = createBrowserRouter([
-  {
-    path: "/crypto-tracker/",
-    element: <Root />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        path: "",
-        element: <Coins />,
-      },
-      {
-        path: ":coinId",
-        element: <Coin />,
-        children: [
-          {
-            path: "chart",
-            element: <Chart />,
-          },
-          {
-            path: "price",
-            element: <Price />,
-          },
-        ],
-      },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Root />,
+      errorElement: <NotFound />,
+      children: [
+        {
+          path: "",
+          element: <Coins />,
+        },
+        {
+          path: ":coinId",
+          element: <Coin />,
+          children: [
+            {
+              path: "chart",
+              element: <Chart />,
+            },
+            {
+              path: "price",
+              element: <Price />,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  { basename: process.env.PUBLIC_URL }
+);
 
 export default router;
