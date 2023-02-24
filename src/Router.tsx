@@ -49,10 +49,10 @@ const BrowserRouter = () => {
   const { isLight } = useThemeStore();
   return (
     <ThemeProvider theme={isLight ? lightTheme : darkTheme}>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router>
         <Routes>
-          <Route path="/" element={<Coins />} />
-          <Route path="/:coinId" element={<Coin />}>
+          <Route path={process.env.PUBLIC_URL + "/"} element={<Coins />} />
+          <Route path={process.env.PUBLIC_URL + "/:coinId"} element={<Coin />}>
             <Route path="price" element={<Price />} />
             <Route path="chart" element={<Chart />} />
           </Route>
