@@ -1,8 +1,6 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { useThemeStore } from "./zustand";
-import { darkTheme, lightTheme } from "./theme";
-import { BrowserRouter } from "react-router-dom";
+
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -72,8 +70,7 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <BrowserRouter />
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 };
