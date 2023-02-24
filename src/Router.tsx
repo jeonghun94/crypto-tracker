@@ -8,7 +8,7 @@ import Root from "./routes/Root";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: `${process.env.PUBLIC_URL}/`,
     element: <Root />,
     errorElement: <NotFound />,
     children: [
@@ -17,15 +17,16 @@ const router = createBrowserRouter([
         element: <Coins />,
       },
       {
-        path: ":coinId",
+        // path: ":coinId",
+        path: `${process.env.PUBLIC_URL}/:coinId`,
         element: <Coin />,
         children: [
           {
-            path: "chart",
+            path: `${process.env.PUBLIC_URL}/:coinId/chart`,
             element: <Chart />,
           },
           {
-            path: "price",
+            path: `${process.env.PUBLIC_URL}/:coinId/price`,
             element: <Price />,
           },
         ],
