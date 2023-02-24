@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import Header from "../components/Header";
 import { darkTheme, lightTheme } from "../theme";
 import { useThemeStore } from "../zustand";
 export default function Root() {

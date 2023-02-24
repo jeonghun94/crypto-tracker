@@ -1,4 +1,4 @@
-import { Link, useLocation, useMatch, useParams } from "react-router-dom";
+import { Link, useMatch, useParams } from "react-router-dom";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import { Outlet } from "react-router-dom";
 import { useQuery } from "react-query";
