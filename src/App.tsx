@@ -66,14 +66,13 @@ a {
 }
 `;
 
-function App() {
+const App = () => {
   return (
     <>
       <GlobalStyle />
-      {/* <Router /> */}
       <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
-}
+};
 
 export default App;

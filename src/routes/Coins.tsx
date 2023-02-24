@@ -1,45 +1,49 @@
-import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import Header from "../components/Header";
+import { useThemeStore } from "../zustand";
 
 const Container = styled.div`
-  padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
 `;
 
-const Header = styled.header`
-  height: 15vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const CoinsList = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding: 0px 10px;
 `;
 
-const CoinsList = styled.ul``;
-
-const Coin = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
+const Coin = styled.div`
+  background-color: ${(props) => props.theme.itemBgColor};
+  color: ${(props) => props.theme.textColor};
   border-radius: 15px;
-  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
   a {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
     padding: 20px;
-    transition: color 0.2s ease-in;
+    transition: all 0.2s ease-in;
   }
   &:hover {
     a {
       color: ${(props) => props.theme.accentColor};
+      transform: scale(1.05);
     }
   }
-`;
-
-const Title = styled.h1`
-  font-size: 48px;
-  color: ${(props) => props.theme.accentColor};
 `;
 
 const Loader = styled.span`
@@ -50,7 +54,6 @@ const Loader = styled.span`
 const Img = styled.img`
   width: 35px;
   height: 35px;
-  margin-right: 10px;
 `;
 
 interface ICoin {
@@ -63,16 +66,16 @@ interface ICoin {
   type: string;
 }
 
-function Coins() {
+const Coins = () => {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  const { isLight, changeTheme } = useThemeStore();
   return (
     <Container>
-      <Helmet>
-        <title>Coins</title>
-      </Helmet>
-      <Header>
-        <Title>코인</Title>
-      </Header>
+      <Header
+        title="Coins"
+        isLight={Boolean(isLight)}
+        changeTheme={changeTheme}
+      />
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -81,7 +84,7 @@ function Coins() {
             <Coin key={coin.id}>
               <Link
                 to={{
-                  pathname: `/${coin.id}`,
+                  pathname: `/${coin.id}/price`,
                 }}
                 state={{
                   name: coin.name,
@@ -90,7 +93,9 @@ function Coins() {
                 <Img
                   src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
                 />
-                {coin.name} &rarr;
+                {coin.name.length > 10
+                  ? coin.name.slice(0, 10) + "..."
+                  : coin.name}
               </Link>
             </Coin>
           ))}
@@ -98,5 +103,5 @@ function Coins() {
       )}
     </Container>
   );
-}
+};
 export default Coins;

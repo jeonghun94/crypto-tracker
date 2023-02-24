@@ -1,7 +1,6 @@
+import { useOutletContext } from "react-router";
 import { fetchCoinHistory } from "../api";
 import { useQuery } from "react-query";
-import ApexChart from "react-apexcharts";
-import { useOutletContext } from "react-router";
 import ReactApexChart from "react-apexcharts";
 
 interface IHistorical {
@@ -17,7 +16,8 @@ interface IHistorical {
 interface ChartProps {
   coinId: string;
 }
-function Chart() {
+
+const Chart = () => {
   const { coinId } = useOutletContext<ChartProps>();
   const { data, isLoading } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
@@ -28,9 +28,7 @@ function Chart() {
   );
 
   let validData = data ?? [];
-  if ("error" in validData) {
-    validData = [];
-  }
+  if ("error" in validData) validData = [];
 
   return (
     <>
@@ -57,20 +55,6 @@ function Chart() {
                 },
               },
             }}
-            // series={
-            //     data: data?.map((d) => {
-            //       return {
-            //         x: new Date(d.time_open).to,
-            //         y: [d.open, d.high, d.low, d.close],
-            //       };
-            //     }),
-            // }
-            // series={[
-            //   {
-            //     name: "Price",
-            //     data: data?.map((price) => price.close),
-            //   },
-            // ]}
             series={[
               {
                 name: "시세",
@@ -87,6 +71,6 @@ function Chart() {
       )}
     </>
   );
-}
+};
 
 export default Chart;

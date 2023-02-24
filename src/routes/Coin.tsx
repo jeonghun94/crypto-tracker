@@ -2,13 +2,9 @@ import { Link, useLocation, useMatch, useParams } from "react-router-dom";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import { Outlet } from "react-router-dom";
 import { useQuery } from "react-query";
-import { Helmet } from "react-helmet";
+import Header from "../components/Header";
 import styled from "styled-components";
-
-const Title = styled.h1`
-  font-size: 48px;
-  color: ${(props) => props.theme.accentColor};
-`;
+import { useThemeStore } from "../zustand";
 
 const Loader = styled.span`
   text-align: center;
@@ -16,18 +12,9 @@ const Loader = styled.span`
 `;
 
 const Container = styled.div`
-  padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
-`;
-
-const Header = styled.header`
-  height: 15vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  flex-direction: column;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const Overview = styled.div`
@@ -36,11 +23,14 @@ const Overview = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   border-radius: 10px;
+  background-color: ${(props) => props.theme.itemBgColor};
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 `;
 const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   width: 33%;
   span:first-child {
     font-size: 10px;
@@ -63,25 +53,15 @@ const Tabs = styled.div`
 const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
-  a {
-    padding: 7px 0px;
-    display: block;
-  }
-`;
+  font-size: 16px;
 
-const BackBtn = styled.div`
+  font-weight: ${(props) => (props.isActive ? "bold" : "400")};
+  border-bottom: 2px solid;
+  color: ${(props) => (props.isActive ? props.theme.accentColor : "#c2c2c2")};
   a {
-    display: flex;
-    align-items: center;
-    color: ${(props) => props.theme.accentColor};
-    font-size: 2rem
-    font-weight: 600;
+    padding: 10px 0px;
+    display: block;
+    background-color: transparent;
   }
 `;
 
@@ -139,9 +119,9 @@ interface PriceData {
   };
 }
 
-function Coin() {
+const Coin = () => {
   const { coinId } = useParams();
-  const { state } = useLocation();
+  const { isLight, changeTheme } = useThemeStore();
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
 
@@ -158,21 +138,16 @@ function Coin() {
   );
 
   const loading = infoLoading || tickersLoading;
+  const title = infoData?.name ? `${infoData?.name}` : "";
+
   return (
     <Container>
-      <Helmet>
-        <title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-        </title>
-      </Helmet>
-      <Header>
-        <BackBtn>
-          <Link to="/">Home</Link>
-        </BackBtn>
-        <Title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-        </Title>
-      </Header>
+      <Header
+        backBtn
+        title={title}
+        isLight={Boolean(isLight)}
+        changeTheme={changeTheme}
+      ></Header>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -191,7 +166,11 @@ function Coin() {
               <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
-          <Description>{infoData?.description}</Description>
+          <br />
+          <Overview>
+            <Description>{infoData?.description}</Description>
+          </Overview>
+          <br />
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
@@ -211,10 +190,10 @@ function Coin() {
               <Link to={`/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
-          <Outlet context={{ coinId }} />
+          <Outlet context={{ tickersData, coinId }} />
         </>
       )}
     </Container>
   );
-}
+};
 export default Coin;
