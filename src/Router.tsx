@@ -8,7 +8,7 @@ import Root from "./routes/Root";
 
 const router = createBrowserRouter([
   {
-    path: process.env.PUBLIC_URL || "/",
+    path: "https://jeonghun94.github.io/crypto-tracker/" || "/",
     element: <Root />,
     errorElement: <NotFound />,
     children: [
